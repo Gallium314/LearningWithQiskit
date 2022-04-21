@@ -19,13 +19,18 @@ circuit.measure([0,1],[0,1])
 #compile the circuit
 compiled_circuit=transpile(circuit, simulator)
 
-#exicute the circuit
-job = simulator.run(compiled_circuit, shots=1000)
-result = job.result()
+#exicute the circuit 10 times
+sum00 = 0
+sum11 = 0
+for i in range (10):
+    job = simulator.run(compiled_circuit, shots=1000)
+    result = job.result()
+    sum00+=result.get_counts(compiled_circuit)['00']
+    sum11+=result.get_counts(compiled_circuit)['11']
+
 
 #counts from the circuit
-counts = result.get_counts(compiled_circuit)
-print("\nTotal count for 00 and 11:",counts)
+print("\Average count for 00: " + str(sum00/10) + ", average count for 11: " + str(sum11/10))
 
-#circuit diagram!
+#art!
 circuit.draw()
